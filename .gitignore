@@ -1,0 +1,22 @@
+# Ignorar archivos de configuración personal
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+# Ignorar archivos temporales que pueden contener información sensible
+*.log
+*.tmp
+
+# Ignorar directorios de compilación
+DerivedData/
+
+# Ignorar archivos de configuración de provisioning y certificados
+*.mobileprovision
+*.p12
+
+# Omitir el archivo de entorno que podría contener credenciales
+.env
+
+# Omitir archivos de paquetes si usas CocoaPods
+Pods/
+
