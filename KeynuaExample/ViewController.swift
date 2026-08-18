@@ -105,10 +105,23 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         let token = "USER-TOKEN-HERE"
 
         if var urlComponents = URLComponents(string: KEYNUA_URL) {
-            urlComponents.queryItems = [
+            var queryItems = [
                 URLQueryItem(name: "token", value: token),
                 URLQueryItem(name: "eventURL", value: EVENT_URL)
             ]
+
+            /**
+             * Forward a STABLE device identifier so Keynua can recognize a returning
+             * device (fraud/velocity — never proof of fraud on its own). identifierForVendor
+             * is stable per vendor+device and, being native, survives the WKWebView's
+             * storage being cleared or recreated between sessions — which the widget's own
+             * web-layer id cannot. Passing it makes it the strongest anchor.
+             * (It resets only when all of your apps are uninstalled from the device.)
+             */
+            if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
+                queryItems.append(URLQueryItem(name: "deviceId", value: deviceId))
+            }
+            urlComponents.queryItems = queryItems
 
             if let url = urlComponents.url {
                 webView.load(URLRequest(url: url))

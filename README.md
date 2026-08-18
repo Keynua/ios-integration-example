@@ -19,6 +19,16 @@ Este repositorio contiene una aplicación de ejemplo en Swift para iOS. La aplic
   - `contractId`: ID del contrato.
   - `status`: Estado de la validación, actualmente solo se soporta el estado "done".
 
+- **Identificador de dispositivo (recomendado)**: Puedes enviar el parámetro `deviceId` con un identificador **estable** del dispositivo. Keynua lo usa para reconocer un dispositivo recurrente (antifraude / velocidad) — **nunca** como prueba de fraude por sí solo. Es especialmente importante en WKWebView: su almacenamiento (localStorage, IndexedDB) puede borrarse o recrearse entre sesiones, y con él se pierde el identificador que el widget genera por su cuenta; un id nativo persiste fuera del WebView y sobrevive ese borrado, por lo que se convierte en el anclaje más fuerte. En iOS se recomienda `UIDevice.current.identifierForVendor` (estable por vendor+dispositivo; solo se reinicia cuando se desinstalan todas tus apps del dispositivo).
+
+  ```swift
+  if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
+      queryItems.append(URLQueryItem(name: "deviceId", value: deviceId))
+  }
+  ```
+
+  Ejemplo de URL: `https://sign.keynua.com/index.html?token=eyJ0...Qis&deviceId=E621E1F8-C36C-495A-93FC-0C247A3E6E5F`
+
 ## Pre-requisitos
 
 - Xcode 11 o superior.
